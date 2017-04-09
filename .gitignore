@@ -75,3 +75,8 @@ proguard/
 .idea/
 #gradle.properties
 *.iml
+
+#############################################################################
+# Antipiracy checker
+#############################################################################
+app/src/main/java/com/lurepheonix/miuiicons/ThemerConstants.java

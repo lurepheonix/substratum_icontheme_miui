@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="substratum.theme.template"
+          package="com.lurepheonix.miuiicons"
           android:installLocation="internalOnly">
 
     <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
@@ -19,7 +19,7 @@
         android:theme="@style/DialogStyle"
         tools:node="replace">
 
-        <activity android:name=".SubstratumLauncher">
+        <activity android:name="com.lurepheonix.miuiicons.SubstratumLauncher">
             <intent-filter>
                 <action android:name="projekt.substratum.THEME"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -46,7 +46,7 @@
         <!-- Do you support Stock but not Theme Ready Gapps? -> stock -->
         <meta-data
             android:name="Substratum_ThemeReady"
-            android:value="all|ready|stock"/> <!-- Only pick one! -->
+            android:value="all"/> <!-- Only pick one! -->
         <meta-data
             android:name="Substratum_Wallpapers"
             android:value="http://pastebin.com/raw/TG4mFdXz"/>
@@ -54,7 +54,7 @@
         <!-- SUBSTRATUM INTERNAL USE: DO NOT TOUCH -->
         <meta-data
             android:name="Substratum_Plugin"
-            android:value="7.0.2"/>
+            android:value="7.0.4"/>
 
     </application>
 
