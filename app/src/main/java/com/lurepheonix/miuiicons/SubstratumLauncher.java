@@ -8,8 +8,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -212,6 +210,7 @@ public class SubstratumLauncher extends Activity {
         if (addon.exists()) {
             ArrayList<String> apps = new ArrayList<>();
             boolean updated = false;
+            boolean incomplete = false;
             PackageManager packageManager = this.getPackageManager();
             StringBuilder app_name = new StringBuilder();
             String[] packageNames = {"com.google.android.gm",
@@ -221,20 +220,44 @@ public class SubstratumLauncher extends Activity {
                     "com.google.android.talk",
                     "com.google.android.youtube",
                     "com.google.android.apps.photos",
-                    "com.google.android.contacts",
-                    "com.google.android.dialer",
                     "com.google.android.inputmethod.latin"};
+            String[] extraPackageNames = {"com.google.android.contacts",
+                    "com.google.android.dialer"};
 
-
-            for (String packageName : packageNames) {
+            for (String packageName : extraPackageNames) {
                 try {
                     ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, 0);
-                    if ((appInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
-                        updated = true;
+                    if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                        incomplete = true;
                         apps.add(packageManager.getApplicationLabel(appInfo).toString());
                     }
                 } catch (Exception e) {
                     // Package not found
+                }
+            }
+
+            if (!incomplete) {
+                for (String packageName : packageNames) {
+                    try {
+                        ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, 0);
+                        if ((appInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
+                            updated = true;
+                            apps.add(packageManager.getApplicationLabel(appInfo).toString());
+                        }
+                    } catch (Exception e) {
+                        // Package not found
+                    }
+                }
+                for (String packageName : extraPackageNames) {
+                    try {
+                        ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, 0);
+                        if ((appInfo.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
+                            updated = true;
+                            apps.add(packageManager.getApplicationLabel(appInfo).toString());
+                        }
+                    } catch (Exception e) {
+                        // Package not found
+                    }
                 }
             }
 
@@ -247,10 +270,12 @@ public class SubstratumLauncher extends Activity {
                 }
             }
 
-            if (!updated) {
+            if (!updated && !incomplete) {
                 launch();
             } else {
-                String parse = String.format(getString(R.string.theme_ready_updated),
+                int stringInt = incomplete ? R.string.theme_ready_incomplete :
+                        R.string.theme_ready_updated;
+                String parse = String.format(getString(stringInt),
                         app_name);
 
                 new AlertDialog.Builder(this, R.style.DialogStyle)
@@ -301,10 +326,14 @@ public class SubstratumLauncher extends Activity {
     }
 
     private void checkConnection() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(
-                Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        boolean isConnected = false;
+        try {
+            Process process = Runtime.getRuntime().exec("ping -c 1 www.google.com");
+            int returnVal = process.waitFor();
+            isConnected = (returnVal == 0);
+        } catch (Exception e) {
+            // Suppress error
+        }
 
         if (!isConnected) {
             Toast.makeText(this, R.string.toast_internet,

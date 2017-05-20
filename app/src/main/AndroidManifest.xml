@@ -5,7 +5,7 @@
           android:installLocation="internalOnly">
 
     <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 	
 	<uses-feature
         android:name="projekt.substratum.theme"
@@ -17,7 +17,8 @@
         android:label="@string/ThemeName"
         android:supportsRtl="true"
         android:theme="@style/DialogStyle"
-        tools:node="replace">
+        tools:node="replace"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name="com.lurepheonix.miuiicons.SubstratumLauncher">
             <intent-filter>
@@ -54,7 +55,7 @@
         <!-- SUBSTRATUM INTERNAL USE: DO NOT TOUCH -->
         <meta-data
             android:name="Substratum_Plugin"
-            android:value="7.0.4"/>
+            android:value="7.0.5"/>
 
     </application>
 
