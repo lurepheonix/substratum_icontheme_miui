@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="substratum.theme.template"
+          package="com.lurepheonix.miuiicons"
           android:installLocation="internalOnly">
 
     <uses-permission android:name="com.android.vending.CHECK_LICENSE"/>
@@ -20,7 +20,7 @@
         tools:node="replace"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".SubstratumLauncher">
+        <activity android:name="substratum.theme.template.SubstratumLauncher">
             <intent-filter>
                 <action android:name="projekt.substratum.THEME"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -52,9 +52,6 @@
         <meta-data
             android:name="Substratum_ThemeReady"
             android:value="@string/ThemeReadyRequirement"/>
-        <meta-data
-            android:name="Substratum_Wallpapers"
-            android:value="@string/ThemeWallpaperSource"/>
 
         <!-- SUBSTRATUM INTERNAL USE: DO NOT TOUCH -->
         <meta-data
